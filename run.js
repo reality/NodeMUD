@@ -34,7 +34,7 @@ var NodeMUD = function() {
             var sandbox = sandboxGen(this, socket.user);
             var commandName = input;
 
-            if(socket.user.commands.include(commandName)) {
+            if(socket.user.commands.hasOwnProperty(commandName)) {
                 vm.runInNewContext(socket.user.commands[commandName], sandbox);
             } else {
                 vm.runInNewContext(input, sandbox);
@@ -53,13 +53,3 @@ NodeMUD.prototype.broadcast = function(text) {
 
 new NodeMUD();
 
-// prototype stuff
-
-Array.prototype.include = function(value) {
-    for(var i=0;i<this.length;i++) {
-        if(this[i] == value) {
-            return true;
-        }
-    }
-    return false;
-};
