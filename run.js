@@ -27,7 +27,7 @@ var NodeMUD = function() {
 }
 NodeMUD.prototype.broadcast = function(text) {
     for(index in this.connections) {
-        this.connections[index].write(data);
+        this.connections[index].write(text);
     }
 }
 
