@@ -26,9 +26,7 @@ var NodeMUD = function() {
 }
 NodeMUD.prototype.broadcast = function(text) {
     for(index in this.connections) {
-        if(this.connections[index] != socket) {
-            this.connections[index].write(data);
-        }
+        this.connections[index].write(data);
     }
 }
 
