@@ -1,16 +1,14 @@
 var net = require('net');
 
-var sockets = [];
+var connections = [];
 
 var server = net.createServer(function(socket) {
-    server.on('connect', function(socket) {
-        sockets.push(socket);
-        socket.write("Welcome to NodeMud, bitches.\r\n");
-    });
+    connections.push(socket);
+    socket.write('Welcome to NodeMUD, bitches.');
 
-    server.on('data', function(data) {
-        for(index in sockets) {
-            sockets[index].write(data);
+    socket.on('data', function(data) {
+        for(index in connections) {
+            connections[index].write(data);
         }
     });
 });
