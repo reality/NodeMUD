@@ -14,7 +14,7 @@ var sandboxGen = function(nmud, user) {
 var testUser = {
     'name': 'reality',
     'commands': {
-        'test': vm.createScript('say(\'fish\');')
+        'test': vm.createScript('function test() { say(\'fish\'); }')
     },
     'socket': null
 };
