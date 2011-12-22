@@ -6,7 +6,7 @@ var server = net.createServer(function(socket) {
     server.on('connect', function(socket) {
         sockets.push(socket);
         socket.write("Welcome to NodeMud, bitches.\r\n");
-    }
+    });
 
     server.on('data', function(data) {
         for(index in sockets) {
