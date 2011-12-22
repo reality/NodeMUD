@@ -31,6 +31,7 @@ var NodeMUD = function() {
     this.server = net.createServer(function(socket) {
         socket.write('Welcome to NodeMUD, bitches.\r\n');
 
+        // Yeah multiple users is broke for now shut up
         testUser.socket = socket;
         socket.user = testUser;
         this.connections.push(testUser);
