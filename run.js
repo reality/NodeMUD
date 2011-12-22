@@ -4,6 +4,7 @@ var sockets = [];
 
 var server = net.createServer(function(socket) {
     sockets.push(socket);
+    console.log(sockets);
     socket.write("Welcome to NodeMud, bitches.\r\n");
 });
 
