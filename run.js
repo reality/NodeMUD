@@ -11,7 +11,6 @@ var sandbox = function(nmud) {
 
 var NodeMUD = function() {
     this.sandbox = sandbox(this);
-    console.log(this.sandbox);
     this.connections = [];
 
     this.server = net.createServer(function(socket) {
@@ -19,9 +18,8 @@ var NodeMUD = function() {
         socket.write('Welcome to NodeMUD, bitches.\r\n');
 
         socket.on('data', function(data) {
-            console.log(this.sandbox);
             vm.runInNewContext(data, this.sandbox);
-        });
+        }.bind(this));
     }.bind(this));
 
     this.server.listen(1337, "64.30.136.166");
