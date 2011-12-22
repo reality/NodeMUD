@@ -25,7 +25,9 @@ var NodeMUD = function() {
 
     this.server.listen(1337, "64.30.136.166");
 }
+
 NodeMUD.prototype.broadcast = function(text) {
+    console.log(this.connections);
     for(index in this.connections) {
         this.connections[index].write(text);
     }
