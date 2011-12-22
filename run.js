@@ -1,12 +1,15 @@
 var net = require('net');
 var vm = require('vm');
 
-var sandboxGen = function(nmud, user) {
+var sandboxGen = function(nmud, user, params) {
     var environment = {
         'say': function(text) {
             nmud.broadcast(text);        
         }
     };
+
+    // TODO: don't add if they're functions or whatever
+    environment.p = params;
 
     return environment;
 };
@@ -14,7 +17,7 @@ var sandboxGen = function(nmud, user) {
 var testUser = {
     'name': 'reality',
     'commands': {
-        'test': "say('fish');"
+        'test': "say(p[1] + p[2]);"
     },
     'socket': null
 };
@@ -31,14 +34,11 @@ var NodeMUD = function() {
         this.connections.push(testUser);
 
         socket.on('data', function(input) {
-            var sandbox = sandboxGen(this, socket.user);
-            var commandName = chomp(input.toString()).split(' ')[0];
-
-            if(socket.user.commands.hasOwnProperty(commandName)) {
-                vm.runInNewContext(socket.user.commands[commandName], sandbox);
-            } else {
-                vm.runInNewContext(input, sandbox);
-            }
+            var chunks = chomp(input.toString()).split(' ');
+            if(socket.user.commands.hasOwnProperty(chunks[0])) {
+                var sandbox = sandboxGen(this, socket.user, chunks);
+                vm.runInNewContext(socket.user.commands[chunks[0]], sandbox);
+            } 
         }.bind(this));
     }.bind(this));
 
