@@ -1,5 +1,6 @@
 var net = require('net');
 var vm = require('vm');
+require('./snippets');
 
 var sandboxGen = function(nmud, user, params) {
     var environment = {
@@ -51,7 +52,3 @@ NodeMUD.prototype.broadcast = function(text) {
 };
 
 new NodeMUD();
-
-function chomp(raw_text) {
-  return raw_text.replace(/(\n|\r)+$/, '');
-}
