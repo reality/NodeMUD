@@ -34,7 +34,7 @@ var NodeMUD = function() {
         this.connections.push(testUser);
 
         socket.on('data', function(input) {
-            var chunks = chomp(input.toString()).split(' ');
+            var chunks = input.toString().chomp().split(' ');
             if(socket.user.commands.hasOwnProperty(chunks[0])) {
                 var sandbox = sandboxGen(this, socket.user, chunks);
                 vm.runInNewContext(socket.user.commands[chunks[0]], sandbox);
