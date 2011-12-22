@@ -22,7 +22,7 @@ var NodeMUD = function() {
         });
     }.bind(this));
 
-    server.listen(1337, "64.30.136.166");
+    this.server.listen(1337, "64.30.136.166");
 }
 NodeMUD.prototype.broadcast = function(text) {
     for(index in this.connections) {
