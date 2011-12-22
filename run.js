@@ -19,7 +19,7 @@ var testUser = {
     'name': 'reality',
     'commands': {
         'test': function(a, b) {
-           say(a + b); 
+            console.log(this);
         }
     },
     'socket': null
