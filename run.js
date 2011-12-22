@@ -8,7 +8,6 @@ var sandboxGen = function(nmud, user, params) {
         }
     };
 
-    // TODO: don't add if they're functions or whatever
     environment.p = params;
 
     return environment;
@@ -43,13 +42,13 @@ var NodeMUD = function() {
     }.bind(this));
 
     this.server.listen(1337, "64.30.136.166");
-}
+};
 
 NodeMUD.prototype.broadcast = function(text) {
     for(index in this.connections) {
         this.connections[index].socket.write(text + '\r\n');
     }
-}
+};
 
 new NodeMUD();
 
