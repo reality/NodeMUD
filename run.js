@@ -8,19 +8,13 @@ var sandboxGen = function(nmud, user) {
         }
     };
 
-    for(index in user.commands) {
-        environment[index] = user.commands[index];
-    }
-
     return environment;
 };
 
 var testUser = {
     'name': 'reality',
     'commands': {
-        'test': function(a, b) {
-            say(a + b);
-        }
+        'test': vm.createScript('say(\'fish\');');
     },
     'socket': null
 };
@@ -38,7 +32,13 @@ var NodeMUD = function() {
 
         socket.on('data', function(input) {
             var sandbox = sandboxGen(this, socket.user);
-            vm.runInNewContext(input, sandbox);
+            var commandName = input.split(' ')[0];
+
+            if(socket.user.commands.include(commandName)) {
+                vm.runInNewContext(socket.user.commands[commandName], sandbox);
+            } else {
+                vm.runInNewContext(input, sandbox);
+            }
         }.bind(this));
     }.bind(this));
 
@@ -52,3 +52,14 @@ NodeMUD.prototype.broadcast = function(text) {
 }
 
 new NodeMUD();
+
+// prototype stuff
+
+Array.prototype.include = function(value) {
+    for(var i=0;i<this.length;i++) {
+        if(this[i] == value) {
+            return true;
+        }
+    }
+    return false;
+};
