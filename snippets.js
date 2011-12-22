@@ -1,3 +1,3 @@
-String.prototype.chomp = function(raw_text) {
-  return raw_text.replace(/(\n|\r)+$/, '');
+String.prototype.chomp = function() {
+  return this.replace(/(\n|\r)+$/, '');
 }
