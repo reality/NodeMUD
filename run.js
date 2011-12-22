@@ -4,7 +4,7 @@ var connections = [];
 
 var server = net.createServer(function(socket) {
     connections.push(socket);
-    socket.write('Welcome to NodeMUD, bitches.');
+    socket.write('Welcome to NodeMUD, bitches.\r\n');
 
     socket.on('data', function(data) {
         for(index in connections) {
