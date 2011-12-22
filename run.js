@@ -32,7 +32,7 @@ var NodeMUD = function() {
 
         socket.on('data', function(input) {
             var sandbox = sandboxGen(this, socket.user);
-            var commandName = input.toString().split(' ')[0];
+            var commandName = chomp(input.toString()).split(' ')[0];
             console.log(commandName);
             if(socket.user.commands.hasOwnProperty(commandName)) {
                 vm.runInNewContext(socket.user.commands[commandName], sandbox);
@@ -53,3 +53,6 @@ NodeMUD.prototype.broadcast = function(text) {
 
 new NodeMUD();
 
+function chomp(raw_text) {
+  return raw_text.replace(/(\n|\r)+$/, '');
+}
