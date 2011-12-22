@@ -29,7 +29,7 @@ var NodeMUD = function() {
 NodeMUD.prototype.broadcast = function(text) {
     console.log(text);
     for(index in this.connections) {
-        this.connections[index].write(text);
+        this.connections[index].write(text + '\r\n');
     }
 }
 
