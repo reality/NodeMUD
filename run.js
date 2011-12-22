@@ -14,7 +14,7 @@ var NodeMUD = function() {
     this.connections = [];
 
     this.server = net.createServer(function(socket) {
-        connections.push(socket);
+        this.connections.push(socket);
         socket.write('Welcome to NodeMUD, bitches.\r\n');
 
         socket.on('data', function(data) {
