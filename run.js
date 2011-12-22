@@ -11,6 +11,7 @@ var sandbox = function(nmud) {
 
 var NodeMUD = function() {
     this.sandbox = sandbox(this);
+    console.log(this.sandbox);
     this.connections = [];
 
     this.server = net.createServer(function(socket) {
