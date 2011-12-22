@@ -17,9 +17,9 @@ var NodeMUD = function() {
         this.connections.push(socket);
         socket.write('Welcome to NodeMUD, bitches.\r\n');
 
-        socket.on('data', function(data) {
-            console.log(data);
-            vm.runInNewContext(data, this.sandbox);
+        socket.on('data', function(input) {
+            console.log(input);
+            vm.runInNewContext(input, this.sandbox);
         }.bind(this));
     }.bind(this));
 
