@@ -32,7 +32,7 @@ var NodeMUD = function() {
 
         socket.on('data', function(input) {
             var sandbox = sandboxGen(this, socket.user);
-            var commandName = input.split(' ')[0];
+            var commandName = input;
 
             if(socket.user.commands.include(commandName)) {
                 vm.runInNewContext(socket.user.commands[commandName], sandbox);
