@@ -8,7 +8,9 @@ var server = net.createServer(function(socket) {
 
     socket.on('data', function(data) {
         for(index in connections) {
-            connections[index].write(data);
+            if(connections[index] != socket) {
+                connections[index].write(data);
+            }
         }
     });
 });
