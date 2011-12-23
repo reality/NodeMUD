@@ -5,7 +5,7 @@ require('./snippets');
 var sandboxGen = function(nmud, user, params) {
     var environment = {
         'say': function(text) {
-            nmud.broadcast(text);        
+            nmud.broadcast(text);
         }
     };
 
@@ -35,10 +35,12 @@ var NodeMUD = function() {
 
         socket.on('data', function(input) {
             var chunks = input.toString().chomp().split(' ');
+            var sandbox = sandboxGen(this, socket.user, chunks);
             if(socket.user.commands.hasOwnProperty(chunks[0])) {
-                var sandbox = sandboxGen(this, socket.user, chunks);
                 vm.runInNewContext(socket.user.commands[chunks[0]], sandbox);
-            } 
+            } else {
+                vm.runInNewContext(chunks[0], sandbox);
+            }
         }.bind(this));
     }.bind(this));
 
