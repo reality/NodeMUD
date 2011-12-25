@@ -15,14 +15,22 @@ var sandboxGen = function(nmud, user, params) {
 };
 
 var testUser = {
-    'name': 'reality',
-    'commands': {
-        'test': "say(p[1] + p[2]);"
-    },
-    'socket': null
-};
+    };
 
 var NodeMUD = function() {
+    this.db = {
+        'users': {
+            'reality': {
+                'name': 'reality',
+                'password': 'turtles',
+                'commands': {
+                    'test': "say(p[1] + p[2]);"
+                },
+                'socket': null
+            }
+        }
+    };
+
     this.connections = [];
 
     this.server = net.createServer(function(socket) {
