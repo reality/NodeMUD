@@ -37,14 +37,22 @@ var NodeMUD = function() {
             var chunks = input.toString().chomp().split(' ');
             var sandbox = sandboxGen(this, socket.user, chunks);
             if(socket.user.commands.hasOwnProperty(chunks[0])) {
-                vm.runInNewContext(socket.user.commands[chunks[0]], sandbox);
+                try {
+                    vm.runInNewContext(socket.user.commands[chunks[0]], sandbox);
+                } catch(err) {
+                    socket.write('Error: ' + err);
+                }
             } else {
-                vm.runInNewContext(chunks[0], sandbox);
+                try {
+                    vm.runInNewContext(chunks[0], sandbox);
+                } catch(err) {
+                    socket.write('Error: ' + err);
+                }
             }
         }.bind(this));
     }.bind(this));
 
-    this.server.listen(1337, "64.30.136.166");
+    this.server.listen(1337, "0.0.0.0");
 };
 
 NodeMUD.prototype.broadcast = function(text) {
