@@ -45,13 +45,13 @@ var NodeMUD = function() {
                     try {
                         vm.runInNewContext(socket.user.commands[chunks[0]], sandbox);
                     } catch(err) {
-                        socket.write('Error: ' + err);
+                        socket.write('Error: ' + err + '\r\n');
                     }
                 } else {
                     try {
                         vm.runInNewContext(chunks[0], sandbox);
                     } catch(err) {
-                        socket.write('Error: ' + err);
+                        socket.write('Error: ' + err + '\r\n');
                     }
                 }
             } else {
@@ -69,7 +69,8 @@ var NodeMUD = function() {
                     if(this.db.users[socket.username].password === password) {
                         this.db.users[socket.username].socket = socket;
                         socket.user = this.db.users[socket.username];
-                        this.connections.push(this.db.users[socket.username]);
+                        this.connections.push(socket.user);
+                        socket.write('You are now logged in! Welcome, ' + socket.user.name + '\r\n');
                     } else {
                         socket.write('Incorrect password, try again:\r\n');
                     }
