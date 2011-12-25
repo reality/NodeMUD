@@ -27,26 +27,44 @@ var NodeMUD = function() {
 
     this.server = net.createServer(function(socket) {
         socket.write('Welcome to NodeMUD, bitches.\r\n');
-
-        // Yeah multiple users is broke for now shut up
-        testUser.socket = socket;
-        socket.user = testUser;
-        this.connections.push(testUser);
+        socket.write('Username (or \'new\'): \r\n');
 
         socket.on('data', function(input) {
             var chunks = input.toString().chomp().split(' ');
-            var sandbox = sandboxGen(this, socket.user, chunks);
-            if(socket.user.commands.hasOwnProperty(chunks[0])) {
-                try {
-                    vm.runInNewContext(socket.user.commands[chunks[0]], sandbox);
-                } catch(err) {
-                    socket.write('Error: ' + err);
+            if(socket.user !== undefined) {
+                var sandbox = sandboxGen(this, socket.user, chunks);
+                if(socket.user.commands.hasOwnProperty(chunks[0])) {
+                    try {
+                        vm.runInNewContext(socket.user.commands[chunks[0]], sandbox);
+                    } catch(err) {
+                        socket.write('Error: ' + err);
+                    }
+                } else {
+                    try {
+                        vm.runInNewContext(chunks[0], sandbox);
+                    } catch(err) {
+                        socket.write('Error: ' + err);
+                    }
                 }
             } else {
-                try {
-                    vm.runInNewContext(chunks[0], sandbox);
-                } catch(err) {
-                    socket.write('Error: ' + err);
+                if(socket.username === undefined) {
+                    var username = chunks[0];
+                    if(this.db.users.hasOwnProperty(username)) {
+                        socket.username = username;
+                        socket.write('Password: \r\n'); 
+                    } else {
+                        socket.write('Username not recognised. Type a valid ' +
+                            'username or \'new\' for a new user:\r\n');
+                    }
+                } else {
+                    var password = chunks[0];
+                    if(this.db.users[socket.username].password === password) {
+                        this.db.users[socket.username].socket = socket;
+                        socket.user = this.db.users[socket.username];
+                        this.connections.push(this.db.users[socket.username]);
+                    } else {
+                        socket.write('Incorrect password, try again:\r\n');
+                    }
                 }
             }
         }.bind(this));
