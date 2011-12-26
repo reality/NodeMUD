@@ -29,7 +29,7 @@ var NodeMUD = function() {
         }
     };
 
-    this.connections = [];
+    this.connections = { };
 
     this.server = net.createServer(function(socket) {
         socket.write('Welcome to NodeMUD, bitches.\r\n');
@@ -55,6 +55,11 @@ var NodeMUD = function() {
                     }
                 }
             }
+        }.bind(this));
+
+        socket.on('end', function() {
+            socket.user.socket = null; 
+            delete this.connections[socket.user.name];
         }.bind(this));
     }.bind(this));
 

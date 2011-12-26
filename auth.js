@@ -22,14 +22,14 @@ var auth = function(nmud, socket) {
             if(nmud.db.users[username].password === password) {
                 nmud.db.users[username].socket = socket;
                 socket.user = nmud.db.users[username];
-                nmud.connections.push(socket.user);
+                nmud.connections[socket.user.name] = socket.user;
                 socket.callback = null;
                 socket.write('You are now logged in! Welcome, ' + socket.user.name + '\r\n');
             } else {
                 socket.write('Incorrect password, try again:\r\n');
             }
         }
-    }
+    };
 
     var newUser = {
         'getUsername': function(socket, data, chunks) {
@@ -53,7 +53,7 @@ var auth = function(nmud, socket) {
                 'socket': socket
             };
             socket.user = nmud.db.users[username];
-            nmud.connections.push(socket.user);
+            nmud.connections[socket.user.name] = socket.user;
             socket.callback = null;
             socket.write('You are now registered! Welcome, ' + socket.user.name + '\r\n');
         }
