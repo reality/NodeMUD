@@ -33,7 +33,7 @@ var NodeMUD = function() {
 
     this.server = net.createServer(function(socket) {
         socket.write('Welcome to NodeMUD, bitches.\r\n');
-        auth.get(socket).execute();
+        auth.get(this, socket).execute();
 
         socket.on('data', function(input) {
             var chunks = input.toString().chomp().split(' ');

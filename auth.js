@@ -1,9 +1,9 @@
-var auth = function(socket) {
+var auth = function(nmud, socket) {
 
     var stages = {
         'getUsername': function(socket, data, chunks) {
             var username = chunks[0];
-            if(this.db.users.hasOwnProperty(username)) {
+            if(nmud.db.users.hasOwnProperty(username)) {
                 socket.username = username;
                 socket.write('Password: \r\n'); 
                 socket.callback = stages.getPassword;
@@ -15,10 +15,10 @@ var auth = function(socket) {
 
         'getPassword': function(socket, data, chunks) {
             var password = chunks[0];
-            if(this.db.users[socket.username].password === password) {
-                this.db.users[socket.username].socket = socket;
-                socket.user = this.db.users[socket.username];
-                this.connections.push(socket.user);
+            if(nmud.db.users[socket.username].password === password) {
+                nmud.db.users[socket.username].socket = socket;
+                socket.user = nmud.db.users[socket.username];
+                nmud.connections.push(socket.user);
                 socket.write('You are now logged in! Welcome, ' + socket.user.name + '\r\n');
                 socket.callback = null;
             } else {
