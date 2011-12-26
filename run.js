@@ -60,7 +60,6 @@ var NodeMUD = function() {
         socket.on('end', function() {
             socket.user.socket = null; 
             delete this.connections[socket.user.name];
-            console.log(this.connections);
         }.bind(this));
     }.bind(this));
 
