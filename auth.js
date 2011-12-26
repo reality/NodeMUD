@@ -56,7 +56,6 @@ var auth = function(nmud, socket) {
             nmud.connections.push(socket.user);
             socket.callback = null;
             socket.write('You are now registered! Welcome, ' + socket.user.name + '\r\n');
-            console.log(nmud.db.users);
         }
     };
 
