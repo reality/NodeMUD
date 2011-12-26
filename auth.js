@@ -6,7 +6,7 @@ var auth = function(nmud, socket) {
             var name = chunks[0];
             if(name === 'new') {
                 socket.write('What username would you like?\r\n');
-                socket.callback = new.getUsername;
+                socket.callback = newUser.getUsername;
             } else if(nmud.db.users.hasOwnProperty(name)) {
                 username = name;
                 socket.callback = login.getPassword;
@@ -31,14 +31,14 @@ var auth = function(nmud, socket) {
         }
     }
 
-    var new = {
+    var newUser = {
         'getUsername': function(socket, data, chunks) {
             var name = chunks[0];
             if(nmud.db.users.hasOwnProperty(name)) {
                 socket.write('That username is already taken. Try again:\r\n');
             } else {
                 username = name;
-                socket.callback = new.getPassword;
+                socket.callback = newUser.getPassword;
                 socket.write('Now choose a password (Note: It\'s transmitted and stored as plain text at the moment so don\'t' +
                             'use anything interesting):\r\n');
             }
