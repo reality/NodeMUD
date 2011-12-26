@@ -1,7 +1,7 @@
 var auth = function(socket) {
 
     var stages = {
-        'getUsername': function() {
+        'getUsername': function(socket, data, chunks) {
             var username = chunks[0];
             if(this.db.users.hasOwnProperty(username)) {
                 socket.username = username;
@@ -13,7 +13,7 @@ var auth = function(socket) {
             }       
         },
 
-        'getPassword': function() {
+        'getPassword': function(socket, data, chunks) {
             var password = chunks[0];
             if(this.db.users[socket.username].password === password) {
                 this.db.users[socket.username].socket = socket;
