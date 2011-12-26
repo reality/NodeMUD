@@ -34,3 +34,7 @@ var auth = function(socket) {
         }
     };
 };
+
+exports.get = function(socket) {
+    return stages(socket);
+}

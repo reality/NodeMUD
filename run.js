@@ -1,6 +1,7 @@
 var net = require('net');
 var vm = require('vm');
 require('./snippets');
+var auth = require('./auth');
 
 var sandboxGen = function(nmud, user, params) {
     var environment = {
@@ -32,6 +33,7 @@ var NodeMUD = function() {
 
     this.server = net.createServer(function(socket) {
         socket.write('Welcome to NodeMUD, bitches.\r\n');
+        auth.get(socket).execute();
 
         socket.on('data', function(input) {
             var chunks = input.toString().chomp().split(' ');
