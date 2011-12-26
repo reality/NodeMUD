@@ -35,6 +35,6 @@ var auth = function(nmud, socket) {
     };
 };
 
-exports.get = function(socket) {
-    return auth(socket);
+exports.get = function(nmud, socket) {
+    return auth(nmud, socket);
 }
