@@ -37,7 +37,7 @@ var NodeMUD = function() {
 
         socket.on('data', function(input) {
             var chunks = input.toString().chomp().split(' ');
-            if(socket.hasOwnProperty('callback') && socket.callback !== undefined) {
+            if(socket.hasOwnProperty('callback') && socket.callback !== undefined && socket.callback !== null) {
                 socket.callback(socket, input, chunks);
             } else {
                 var sandbox = sandboxGen(this, socket.user, chunks);
