@@ -1,12 +1,16 @@
 var auth = function(nmud, socket) {
+    var username;
 
-    var stages = {
+    var login = {
         'getUsername': function(socket, data, chunks) {
-            var username = chunks[0];
-            if(nmud.db.users.hasOwnProperty(username)) {
-                socket.username = username;
+            var name = chunks[0];
+            if(name === 'new') {
+                socket.write('What username would you like?\r\n');
+                socket.callback = new.getUsername;
+            } else if(nmud.db.users.hasOwnProperty(name)) {
+                username = name;
+                socket.callback = login.getPassword;
                 socket.write('Password: \r\n'); 
-                socket.callback = stages.getPassword;
             } else {
                 socket.write('Username not recognised. Type a valid ' +
                     'username or \'new\' for a new user:\r\n');
@@ -15,22 +19,49 @@ var auth = function(nmud, socket) {
 
         'getPassword': function(socket, data, chunks) {
             var password = chunks[0];
-            if(nmud.db.users[socket.username].password === password) {
-                nmud.db.users[socket.username].socket = socket;
-                socket.user = nmud.db.users[socket.username];
+            if(nmud.db.users[username].password === password) {
+                nmud.db.users[username].socket = socket;
+                socket.user = nmud.db.users[username];
                 nmud.connections.push(socket.user);
-                socket.write('You are now logged in! Welcome, ' + socket.user.name + '\r\n');
                 socket.callback = null;
+                socket.write('You are now logged in! Welcome, ' + socket.user.name + '\r\n');
             } else {
                 socket.write('Incorrect password, try again:\r\n');
             }
         }
     }
 
+    var new = {
+        'getUsername': function(socket, data, chunks) {
+            var name = chunks[0];
+            if(nmud.db.users.hasOwnProperty(name)) {
+                socket.write('That username is already taken. Try again:\r\n');
+            } else {
+                username = name;
+                socket.callback = new.getPassword;
+                socket.write('Now choose a password (Note: It\'s transmitted and stored as plain text at the moment so don\'t' +
+                            'use anything interesting):\r\n');
+            }
+        },
+
+        'getPassword': function(socket, data, chunks) {
+            var password = chunks[0];
+            nmud.db.users[username] = {
+                'name': username,
+                'password': password,
+                'commands': {},
+                'socket': socket
+            };
+            socket.callback = null;
+            socket.write('You are now registered! Welcome, ' + socket.user.name + '\r\n');
+            console.log(nmud.db.users);
+        }
+    };
+
     return {
         'execute': function() {
+            socket.callback = login.getUsername;
             socket.write('Username (or \'new\'): \r\n');
-            socket.callback = stages.getUsername;
         }
     };
 };
