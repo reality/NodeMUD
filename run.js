@@ -1,6 +1,6 @@
 var net = require('net');
 var vm = require('vm');
-var fs = require('fs);
+var fs = require('fs');
 var auth = require('./auth');
 require('./snippets');
 
