@@ -61,11 +61,18 @@ var NodeMUD = function() {
             if(socket.hasOwnProperty('user')) {
                 socket.user.socket = null; 
                 delete this.connections[socket.user.name];
+                this.broadcast(socket.user.name + ' disconnected')
             }
         }.bind(this));
     }.bind(this));
 
     this.server.listen(1337, "0.0.0.0");
+};
+
+NodeMUD.prototype.broadcast = function(text) {
+    for(index in this.connections) {
+        this.connections[index].socket.write('[' + text + ']\r\n');
+    }
 };
 
 new NodeMUD();
