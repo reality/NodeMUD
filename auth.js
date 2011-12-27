@@ -25,6 +25,7 @@ var auth = function(nmud, socket) {
                 nmud.connections[socket.user.name] = socket.user;
                 socket.callback = null;
                 socket.write('You are now logged in! Welcome, ' + socket.user.name + '\r\n');
+                nmud.broadcast(socket.user.name + ' connected');
             } else {
                 socket.write('Incorrect password, try again:\r\n');
             }
@@ -40,7 +41,7 @@ var auth = function(nmud, socket) {
                 username = name;
                 socket.callback = newUser.getPassword;
                 socket.write('Now choose a password (Note: It\'s transmitted and stored as plain text at the moment so don\'t' +
-                            'use anything interesting):\r\n');
+                            ' use anything interesting):\r\n');
             }
         },
 
@@ -56,6 +57,7 @@ var auth = function(nmud, socket) {
             nmud.connections[socket.user.name] = socket.user;
             socket.callback = null;
             socket.write('You are now registered! Welcome, ' + socket.user.name + '\r\n');
+            nmud.broadcast(socket.user.name + ' connected');
         }
     };
 
