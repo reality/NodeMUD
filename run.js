@@ -1,7 +1,8 @@
 var net = require('net');
 var vm = require('vm');
-require('./snippets');
+var fs = require('fs);
 var auth = require('./auth');
+require('./snippets');
 
 var sandboxGen = function(nmud, user, params) {
     var environment = {
