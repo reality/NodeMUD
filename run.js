@@ -15,7 +15,7 @@ var sandboxGen = function(nmud, user, params) {
                 verb = 'exclaims';
             }
 
-            var output = socket.user.name + ' ' + verb + ' "' + text + '"\r\n';
+            var output = user.name + ' ' + verb + ' "' + text + '"\r\n';
 
             for(index in nmud.connections) { // Room is scope when available
                 nmud.connections[index].socket.write(output);
