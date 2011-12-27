@@ -58,8 +58,10 @@ var NodeMUD = function() {
         }.bind(this));
 
         socket.on('end', function() {
-            socket.user.socket = null; 
-            delete this.connections[socket.user.name];
+            if(socket.hasOwnProperty('user')) {
+                socket.user.socket = null; 
+                delete this.connections[socket.user.name];
+            }
         }.bind(this));
     }.bind(this));
 
