@@ -68,10 +68,4 @@ var NodeMUD = function() {
     this.server.listen(1337, "0.0.0.0");
 };
 
-NodeMUD.prototype.broadcast = function(text) {
-    for(index in this.connections) {
-        this.connections[index].socket.write('[BROADCAST] ' + text + '\r\n');
-    }
-};
-
 new NodeMUD();
