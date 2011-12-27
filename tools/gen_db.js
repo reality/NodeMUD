@@ -1,5 +1,10 @@
 var fs = require('fs');
 var db = {
+    "globalCommands": {
+        "say": "say(p.slice(1).join(' '));"
+    },
+    "aliases": {
+    },
     "users": {
         "reality": {
             "name": "reality",

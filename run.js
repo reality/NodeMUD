@@ -12,7 +12,6 @@ var sandboxGen = function(nmud, user, params) {
     };
 
     environment.p = params;
-
     return environment;
 };
 
@@ -30,19 +29,22 @@ var NodeMUD = function() {
                 socket.callback(socket, input, chunks);
             } else {
                 var sandbox = sandboxGen(this, socket.user, chunks);
+                var command = null;
+
                 if(socket.user.commands.hasOwnProperty(chunks[0])) {
-                    try {
-                        vm.runInNewContext(socket.user.commands[chunks[0]], sandbox);
-                    } catch(err) {
-                        socket.write('Error: ' + err + '\r\n');
-                    }
+                    command = socket.user.commands[chunks[0]];
+                } else if(this.db.globalCommands.hasOwnProperty(chunks[0])) {
+                    command = this.db.globalCommands[chunks[0]]; 
                 } else {
-                    try {
-                        vm.runInNewContext(chunks[0], sandbox);
-                    } catch(err) {
-                        socket.write('Error: ' + err + '\r\n');
-                    }
+                    command = chunks[0];
                 }
+
+                try {
+                    vm.runInNewContext(command, sandbox);
+                } catch(err) {
+                    socket.write('Error: ' + err + '\r\n');
+                }
+                
             }
         }.bind(this));
 
