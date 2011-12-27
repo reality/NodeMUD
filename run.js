@@ -7,7 +7,19 @@ require('./snippets');
 var sandboxGen = function(nmud, user, params) {
     var environment = {
         'say': function(text) {
-            nmud.broadcast(text);
+            var verb = 'says';
+            var modifier = text.substr(-1);
+            if(modifier === '?') {
+                verb = 'asks';
+            } else if(modifier === '!') {
+                verb = 'exclaims';
+            }
+
+            var output = socket.user.name + ' ' + verb + ' "' + text + '"\r\n';
+
+            for(index in nmud.connections) { // Room is scope when available
+                nmud.connections[index].socket.write(output);
+            }
         }
     };
 
@@ -42,7 +54,6 @@ var NodeMUD = function() {
                 } catch(err) {
                     socket.write('Error: ' + err + '\r\n');
                 }
-                
             }
         }.bind(this));
 
@@ -59,7 +70,7 @@ var NodeMUD = function() {
 
 NodeMUD.prototype.broadcast = function(text) {
     for(index in this.connections) {
-        this.connections[index].socket.write(text + '\r\n');
+        this.connections[index].socket.write('[BROADCAST] ' + text + '\r\n');
     }
 };
 
