@@ -16,19 +16,7 @@ var sandboxGen = function(nmud, user, params) {
 };
 
 var NodeMUD = function() {
-    this.db = {
-        'users': {
-            'reality': {
-                'name': 'reality',
-                'password': 'turtles',
-                'commands': {
-                    'test': "say(p[1] + p[2]);"
-                },
-                'socket': null
-            }
-        }
-    };
-
+    this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
     this.connections = { };
 
     this.server = net.createServer(function(socket) {
