@@ -29,14 +29,12 @@ var NodeMUD = function() {
                 socket.callback(socket, input, chunks);
             } else {
                 var sandbox = sandboxGen(this, socket.user, chunks);
-                var command = null;
+                var command = chunks[0];
 
                 if(socket.user.commands.hasOwnProperty(chunks[0])) {
                     command = socket.user.commands[chunks[0]];
                 } else if(this.db.globalCommands.hasOwnProperty(chunks[0])) {
                     command = this.db.globalCommands[chunks[0]]; 
-                } else {
-                    command = chunks[0];
                 }
 
                 try {
