@@ -3,6 +3,7 @@ var db = {
     "globalCommands": {
         "say": "say(p.slice(1).join(' '));"
         "quit": "quit();"
+        "slap": "slap(p.slice(1, 2));"
     },
     "aliases": {
     },

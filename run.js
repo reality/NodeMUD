@@ -24,6 +24,22 @@ var sandboxGen = function(nmud, user, params) {
         'quit': function() {
             user.socket.write('Goodbye ' + user.name + '!\r\n');
             user.socket.end();
+        },
+        'slap': function(who) {
+            var isconnected = false;
+            for(index in nmud.connections) {
+                if(who == nmud.connections[index].socket.user.name) {
+                    isconnected = true;
+                }
+            }
+            if(isconnected) {
+                output = user.name + ' slaps ' + who + ' with a fish!\r\n';    
+                for(index in nmud.connections) { 
+                    nmud.connections[index].socket.write(output);
+                }
+            } else {
+                user.socket.write('No user online called ' + who +'\r\n');
+            }
         }
     };
 
