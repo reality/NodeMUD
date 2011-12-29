@@ -41,6 +41,11 @@ var sandboxGen = function(nmud, user, params) {
 
 var NodeMUD = function() {
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+
+    // Not sure whether to put this here (allows reloading) or in gen_db, this 
+    //  will do for now.
+    this.loadCommands();
+
     this.connections = { };
 
     this.server = net.createServer(function(socket) {
@@ -79,6 +84,15 @@ var NodeMUD = function() {
     }.bind(this));
 
     this.server.listen(1337, "127.0.0.1");
+};
+
+NodeMUD.prototype.loadCommands = function() {
+    fs.readdir('./globals/', function(err, files) {
+        for(file in files) {
+            this.db.globalCommands[file.split('.')[0]] = 
+                fs.readFileSync(file, 'utf8');
+        }
+    });
 };
 
 NodeMUD.prototype.broadcast = function(text) {
