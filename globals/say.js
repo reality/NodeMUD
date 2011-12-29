@@ -10,4 +10,4 @@ if(modifier === '?') {
 
 var output = ' ' + verb + ' "' + text + '"\r\n';
 echo('You' + output);
-oecho(user.name + output);
+oecho(username + output);

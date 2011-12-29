@@ -24,7 +24,9 @@ var sandboxGen = function(nmud, user, params) {
                     nmud.connections[index].socket.write(output);
                 }
             }
-        }
+        },
+
+        'username': user.name
     };
 
     environment.p = params;
