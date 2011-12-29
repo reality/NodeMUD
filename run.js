@@ -20,7 +20,15 @@ var sandboxGen = function(nmud, user, params) {
             for(index in nmud.connections) { // Room is scope when available
                 nmud.connections[index].socket.write(output);
             }
-        }
+        },
+
+        'getConnectedUsers': function(){
+            var connectedUsers = [];
+            for(index in nmud.connections){
+                connectedUsers.push(nmud.connections[index].socket.user.name);
+            }
+            return connectedUsers;
+        },
 
         'echo': function(text) {
             user.socket.write(text + '\r\n'); 
@@ -70,7 +78,7 @@ var NodeMUD = function() {
         }.bind(this));
     }.bind(this));
 
-    this.server.listen(1337, "0.0.0.0");
+    this.server.listen(1337, "127.0.0.1");
 };
 
 NodeMUD.prototype.broadcast = function(text) {
