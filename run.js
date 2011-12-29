@@ -21,6 +21,10 @@ var sandboxGen = function(nmud, user, params) {
                 nmud.connections[index].socket.write(output);
             }
         }
+
+        'echo': function(text) {
+            user.socket.write(text); 
+        }
     };
 
     environment.p = params;
