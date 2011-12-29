@@ -87,13 +87,12 @@ var NodeMUD = function() {
 };
 
 NodeMUD.prototype.loadCommands = function() {
-    console.log(this.db);
     fs.readdir('./globals/', function(err, files) {
         for(file in files) {
             this.db.globalCommands[file.split('.')[0]] = 
                 fs.readFileSync(file, 'utf8');
         }
-    });
+    }.bind(this));
 };
 
 NodeMUD.prototype.broadcast = function(text) {
