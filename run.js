@@ -6,22 +6,6 @@ require('./snippets');
 
 var sandboxGen = function(nmud, user, params) {
     var environment = {
-        'say': function(text) {
-            var verb = 'says';
-            var modifier = text.substr(-1);
-            if(modifier === '?') {
-                verb = 'asks';
-            } else if(modifier === '!') {
-                verb = 'exclaims';
-            }
-
-            var output = user.name + ' ' + verb + ' "' + text + '"\r\n';
-
-            for(index in nmud.connections) { // Room is scope when available
-                nmud.connections[index].socket.write(output);
-            }
-        },
-
         'getConnectedUsers': function(){
             var connectedUsers = [];
             for(index in nmud.connections){
@@ -32,6 +16,14 @@ var sandboxGen = function(nmud, user, params) {
 
         'echo': function(text) {
             user.socket.write(text + '\r\n'); 
+        },
+
+        'oecho': function(text) { // TODO: scope argument when rooms
+            for(index in nmud.connections) { 
+                if(index != user.name) {
+                    nmud.connections[index].socket.write(output);
+                }
+            }
         }
     };
 
