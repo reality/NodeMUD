@@ -20,7 +20,15 @@ var sandboxGen = function(nmud, user, params) {
             for(index in nmud.connections) { // Room is scope when available
                 nmud.connections[index].socket.write(output);
             }
-        }
+        },
+
+        'who': function(){
+            var output = 'Connected Users' + '\r\n';
+            for(index in nmud.connections){
+                output += nmud.connections[index].socket.user.name + '\r\n';
+            }
+            environment.echo(output);
+        },
 
         'echo': function(text) {
             user.socket.write(text + '\r\n'); 
