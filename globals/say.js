@@ -8,6 +8,5 @@ if(modifier === '?') {
     verb = 'exclaims';
 }
 
-var output = ' ' + verb + ' "' + text + '"';
-echo('You' + output);
-oecho(username + output);
+echo('You ' + verb.slice(0, -1) + ' "' + text + '"');
+oecho(username + ' ' + verb + ' "' + text + '"');
