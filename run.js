@@ -25,7 +25,7 @@ var sandboxGen = function(nmud, user, params) {
             user.socket.write('Goodbye ' + user.name + '!\r\n');
             user.socket.end();
         },
-        'kick': function(who) {
+        'kick': function(who, reason) {
             var isConnected = false;
             var beingKicked;
             for(index in nmud.connections) {
@@ -35,9 +35,9 @@ var sandboxGen = function(nmud, user, params) {
                 }
             }
             if(isConnected) {
-                beingKicked.write('[You have been kicked from the server]\r\n');
+                beingKicked.write('[You have been kicked from the server. Reason: ' + reason + ']\r\n');
                 beingKicked.end();
-                output = '[' + user.name + ' has kicked ' + beingKicked.user.name + ' from the server]\r\n';    
+                output = '[' + user.name + ' has kicked ' + beingKicked.user.name + ' from the server. Reason: ' + reason + ']\r\n';    
                 for(index in nmud.connections) {
                     if(who != nmud.connections[index].socket.user.name) {
                         nmud.connections[index].socket.write(output);
