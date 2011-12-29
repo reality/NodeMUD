@@ -44,7 +44,7 @@ var NodeMUD = function() {
 
     // Not sure whether to put this here (allows reloading) or in gen_db, this 
     //  will do for now.
-    this.loadCommands();
+    //this.loadCommands();
 
     this.connections = { };
 
