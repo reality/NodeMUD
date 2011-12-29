@@ -2,7 +2,7 @@ var fs = require('fs');
 var db = {
     "globalCommands": {
         "say": "say(p.slice(1).join(' '));",
-        "who": "who();"
+        "who": "var users = getConnectedUsers(); for(name in users) echo(users[name]);"
     },
     "aliases": {
     },

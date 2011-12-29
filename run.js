@@ -22,12 +22,12 @@ var sandboxGen = function(nmud, user, params) {
             }
         },
 
-        'who': function(){
-            var output = 'Connected Users' + '\r\n';
+        'getConnectedUsers': function(){
+            var connectedUsers = [];
             for(index in nmud.connections){
-                output += nmud.connections[index].socket.user.name + '\r\n';
+                connectedUsers.push(nmud.connections[index].socket.user.name);
             }
-            environment.echo(output);
+            return connectedUsers;
         },
 
         'echo': function(text) {
