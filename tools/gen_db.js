@@ -1,12 +1,7 @@
 var fs = require('fs');
 var db = {
     "globalCommands": {
-        "say": "say(p.slice(1).join(' '));"
         "quit": "quit();"
-        "slap": "slap(p.slice(1, 2));"
-    },
-    "adminCommands": {
-        "kick": "kick(p.slice(1, 2));"
     },
     "aliases": {
     },
@@ -17,17 +12,15 @@ var db = {
             "commands": {
                 "test": "say(p[1] + p[2]);"
             },
-            "socket": null,
-            "admin": true
-        }
+            "socket": null
+        },
         "newb": {
             "name": "newb",
             "password": "winning",
             "commands": {
                 "test": "say(p[1] + p[2]);"
             },
-            "socket": null,
-            "admin": true
+            "socket": null
         }
         "foo": {
             "name": "foo",
@@ -35,8 +28,7 @@ var db = {
             "commands": {
                 "test": "say(p[1] + p[2]);"
             },
-            "socket": null,
-            "admin": false
+            "socket": null
         }
     }
 };

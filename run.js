@@ -6,63 +6,42 @@ require('./snippets');
 
 var sandboxGen = function(nmud, user, params) {
     var environment = {
-        'say': function(text) {
-            var verb = 'says';
-            var modifier = text.substr(-1);
-            if(modifier === '?') {
-                verb = 'asks';
-            } else if(modifier === '!') {
-                verb = 'exclaims';
+        'getConnectedUsers': function(){
+            var connectedUsers = [];
+            for(index in nmud.connections){
+                connectedUsers.push(nmud.connections[index].socket.user.name);
             }
+            return connectedUsers;
+        },
 
-            var output = user.name + ' ' + verb + ' "' + text + '"\r\n';
+        'echo': function(text) {
+            user.socket.write(text + '\r\n'); 
+        },
 
-            for(index in nmud.connections) { // Room is scope when available
-                nmud.connections[index].socket.write(output);
+        'oecho': function(text) { // TODO: scope argument when rooms
+            for(index in nmud.connections) { 
+                if(index != user.name) {
+                    nmud.connections[index].socket.write(text + '\r\n');
+                }
             }
         },
+
+        'isConnected': function(who) {
+            var connected = false; 
+            for(index in nmud.connections) {
+                if(who == nmud.connections[index].socket.user.name) {
+                    connected = true;
+                }
+            }
+            return connected;
+        },
+
         'quit': function() {
             user.socket.write('Goodbye ' + user.name + '!\r\n');
             user.socket.end();
-        },
-        'kick': function(who, reason) {
-            var isConnected = false;
-            var beingKicked;
-            for(index in nmud.connections) {
-                if(who == nmud.connections[index].socket.user.name) {
-                    isConnected = true;
-                    beingKicked = nmud.connections[index].socket;
-                }
-            }
-            if(isConnected) {
-                beingKicked.write('[You have been kicked from the server. Reason: ' + reason + ']\r\n');
-                beingKicked.end();
-                output = '[' + user.name + ' has kicked ' + beingKicked.user.name + ' from the server. Reason: ' + reason + ']\r\n';    
-                for(index in nmud.connections) {
-                    if(who != nmud.connections[index].socket.user.name) {
-                        nmud.connections[index].socket.write(output);
-                    }
-                }
-            } else {
-                user.socket.write('No user online called ' + who +'\r\n');
-            }
-        },
-        'slap': function(who) {
-            var isConnected = false;
-            for(index in nmud.connections) {
-                if(who == nmud.connections[index].socket.user.name) {
-                    isConnected = true;
-                }
-            }
-            if(isConnected) {
-                output = user.name + ' slaps ' + who + ' with a fish!\r\n';    
-                for(index in nmud.connections) { 
-                    nmud.connections[index].socket.write(output);
-                }
-            } else {
-                user.socket.write('No user online called ' + who +'\r\n');
-            }
-        }
+        },  
+
+        'username': user.name
     };
 
     environment.p = params;
@@ -71,6 +50,11 @@ var sandboxGen = function(nmud, user, params) {
 
 var NodeMUD = function() {
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+
+    // Not sure whether to put this here (allows reloading) or in gen_db, this 
+    //  will do for now.
+    this.loadCommands();
+
     this.connections = { };
 
     this.server = net.createServer(function(socket) {
@@ -89,12 +73,6 @@ var NodeMUD = function() {
                     command = socket.user.commands[chunks[0]];
                 } else if(this.db.globalCommands.hasOwnProperty(chunks[0])) {
                     command = this.db.globalCommands[chunks[0]]; 
-                } else if(this.db.adminCommands.hasOwnProperty(chunks[0])) {
-                    if(socket.user.admin) {
-                        command = this.db.adminCommands[chunks[0]];
-                    } else {
-                        socket.write('You need to be an admin to do this\r\n');
-                    }
                 }
 
                 try {
@@ -115,6 +93,17 @@ var NodeMUD = function() {
     }.bind(this));
 
     this.server.listen(1337, "0.0.0.0");
+};
+
+NodeMUD.prototype.loadCommands = function() {
+    fs.readdir('./globals/', function(err, files) {
+        var file;
+        for(var i=0;i<files.length;i++) {
+            file = files[i];
+            this.db.globalCommands[file.split('.')[0]] = 
+                fs.readFileSync('./globals/' + file, 'utf8');
+        }
+    }.bind(this));
 };
 
 NodeMUD.prototype.broadcast = function(text) {
