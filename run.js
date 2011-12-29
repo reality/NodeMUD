@@ -87,6 +87,7 @@ var NodeMUD = function() {
 };
 
 NodeMUD.prototype.loadCommands = function() {
+    console.log(this.db);
     fs.readdir('./globals/', function(err, files) {
         for(file in files) {
             this.db.globalCommands[file.split('.')[0]] = 
