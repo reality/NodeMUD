@@ -8,6 +8,6 @@ if(modifier === '?') {
     verb = 'exclaims';
 }
 
-var output = ' ' + verb + ' "' + text + '"\r\n';
+var output = ' ' + verb + ' "' + text + '"';
 echo('You' + output);
 oecho(username + output);
