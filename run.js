@@ -23,7 +23,7 @@ var sandboxGen = function(nmud, user, params) {
         }
 
         'echo': function(text) {
-            user.socket.write(text); 
+            user.socket.write(text + '\r\n'); 
         }
     };
 
