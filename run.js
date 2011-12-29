@@ -21,7 +21,7 @@ var sandboxGen = function(nmud, user, params) {
         'oecho': function(text) { // TODO: scope argument when rooms
             for(index in nmud.connections) { 
                 if(index != user.name) {
-                    nmud.connections[index].socket.write(output + '\r\n');
+                    nmud.connections[index].socket.write(text + '\r\n');
                 }
             }
         },
