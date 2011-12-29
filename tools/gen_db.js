@@ -5,6 +5,9 @@ var db = {
         "quit": "quit();"
         "slap": "slap(p.slice(1, 2));"
     },
+    "adminCommands": {
+        "kick": "kick(p.slice(1, 2));"
+    },
     "aliases": {
     },
     "users": {
@@ -14,7 +17,26 @@ var db = {
             "commands": {
                 "test": "say(p[1] + p[2]);"
             },
-            "socket": null
+            "socket": null,
+            "admin": true
+        }
+        "newb": {
+            "name": "newb",
+            "password": "winning",
+            "commands": {
+                "test": "say(p[1] + p[2]);"
+            },
+            "socket": null,
+            "admin": true
+        }
+        "foo": {
+            "name": "foo",
+            "password": "bar",
+            "commands": {
+                "test": "say(p[1] + p[2]);"
+            },
+            "socket": null,
+            "admin": false
         }
     }
 };
