@@ -1,4 +1,4 @@
-var text = p.slice(1).join(' ');  
+var text = p.slice(1).join(' '); 
 
 var verb = 'says';
 var modifier = text.substr(-1);

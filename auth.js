@@ -51,6 +51,7 @@ var auth = function(nmud, socket) {
                 'name': username,
                 'password': password,
                 'commands': {},
+                'location': 0,
                 'socket': socket
             };
             socket.user = nmud.db.users[username];
