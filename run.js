@@ -18,7 +18,7 @@ var sandboxGen = function(nmud, user, params) {
             user.socket.write(text + '\r\n'); 
         },
 
-        'oecho': function(text) { // TODO: scope argument when rooms
+        'oecho': function(text) {
             for(index in nmud.connections) { 
                 if(index != user.name) {
                     nmud.connections[index].socket.write(text + '\r\n');
@@ -55,9 +55,9 @@ var NodeMUD = function() {
                 var command = chunks[0];
 
                 if(socket.user.commands.hasOwnProperty(chunks[0])) {
-                    command = socket.user.commands[chunks[0]];
-                } else if(this.db.globalCommands.hasOwnProperty(chunks[0])) {
-                    command = this.db.globalCommands[chunks[0]]; 
+                    command = socket.user.commands[chunks[0]].code;
+                } else if(this.db.rooms[0].commands.hasOwnProperty(chunks[0])) { // Global command room
+                    command = this.db.rooms[0].commands[chunks[0]].code;
                 }
 
                 try {
@@ -83,10 +83,17 @@ var NodeMUD = function() {
 NodeMUD.prototype.loadCommands = function() {
     fs.readdir('./globals/', function(err, files) {
         var file;
+        var command;
         for(var i=0;i<files.length;i++) {
             file = files[i];
-            this.db.globalCommands[file.split('.')[0]] = 
-                fs.readFileSync('./globals/' + file, 'utf8');
+            command = {
+                "id": i,
+                "name": file.split('.')[0],
+                "code": fs.readFileSync('./globals/' + file, 'utf8')
+            };
+
+            this.db.commands.push(command);
+            this.db.rooms[0].commands[command.name] = command;
         }
     }.bind(this));
 };
