@@ -5,13 +5,15 @@ var db = {
             "id": 0,
             "name": "Global Command Room",
             "owner": "root",
-            "description": "It's where global commands go."
+            "description": "It's where global commands go.",
+            "commands": { }
         },
         {
             "id": 2,
             "name": "A Mother Fucking Terrarium",
             "owner": "reality",
-            "description": "Here be turtles."
+            "description": "Here be turtles.",
+            "commands": { }
         }
     ],
     "aliases": {
