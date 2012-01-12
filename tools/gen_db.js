@@ -3,16 +3,16 @@ var db = {
     "rooms": [
         {
             "id": 0,
-            "name": "Global Command Room",
+            "name": "Globals Room",
             "owner": "root",
             "description": "It's where global commands go.",
             "commands": { }
         },
         {
-            "id": 2,
-            "name": "A Mother Fucking Terrarium",
+            "id": 1,
+            "name": "Pub",
             "owner": "reality",
-            "description": "Here be turtles.",
+            "description": "The Turtle.",
             "commands": { }
         }
     ],

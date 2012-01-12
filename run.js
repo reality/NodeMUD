@@ -58,6 +58,8 @@ var NodeMUD = function() {
                     command = socket.user.commands[chunks[0]].code;
                 } else if(this.db.rooms[0].commands.hasOwnProperty(chunks[0])) { // Global command room
                     command = this.db.rooms[0].commands[chunks[0]].code;
+                } else if(this.db.rooms[socket.user.location].commands.hasOwnProperty(chunks[0])) { // Current room
+                    command = this.db.rooms[socket.user.location].commands[chunks[0]].code;
                 }
 
                 try {
