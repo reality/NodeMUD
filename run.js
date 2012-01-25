@@ -26,7 +26,7 @@ var sandboxGen = function(nmud, user, params) {
             }
         },
 
-        'username': user.name
+        'user': user
     };
 
     environment.p = params;
